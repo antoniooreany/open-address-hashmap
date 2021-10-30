@@ -11,11 +11,12 @@ public class OpenAddressHashMap {
     private static final float DEFAULT_RESIZE_CAPACITY_MULTIPLIER = 2.0F;
 
     /*
-        performance / memory consumption can be changed by changing values of:
+    As soon as performance inversely correlate with memory consumption,
+    performance / memory consumption can be changed by changing values of following fields:
         - capacity
         - loadFactor
         - resizeCapacityMultiplier
-        it can be done even during runtime via setters for:
+    it can be done even during runtime via setters for:
     */
     private int capacity;
     private float loadFactor;
