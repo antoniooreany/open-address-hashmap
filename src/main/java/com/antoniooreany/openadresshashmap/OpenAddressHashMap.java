@@ -11,12 +11,14 @@ public class OpenAddressHashMap {
     private static final float DEFAULT_RESIZE_CAPACITY_MULTIPLIER = 2.0F;
 
     /*
-    As soon as performance inversely correlate with memory consumption,
+    As soon as performance directly correlate with memory consumption,
+    meaning: the more performance you need under otherwise equal conditions,
+    the more memory have to be used.
     performance / memory consumption can be changed by changing values of following fields:
         - capacity
         - loadFactor
         - resizeCapacityMultiplier
-    it can be done even during runtime via setters for:
+    it can be done even during runtime via setters for these fields.
     */
     private int capacity;
     private float loadFactor;
