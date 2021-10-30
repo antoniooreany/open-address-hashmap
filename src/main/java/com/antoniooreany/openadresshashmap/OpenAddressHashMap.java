@@ -11,38 +11,31 @@ public class OpenAddressHashMap {
     private static final float DEFAULT_RESIZE_CAPACITY_MULTIPLIER = 2.0F;
 
     private int capacity;
-    private final float loadFactor;
-    private final float resizeCapacityMultiplier;
+    private float loadFactor;
+    private float resizeCapacityMultiplier;
     private HashmapElement[] table;
     private int size;
 
-    public OpenAddressHashMap() {
-        this.capacity = DEFAULT_CAPACITY;
-        this.loadFactor = DEFAULT_LOAD_FACTOR;
-        this.resizeCapacityMultiplier = DEFAULT_RESIZE_CAPACITY_MULTIPLIER;
-        this.table = new HashmapElement[DEFAULT_CAPACITY];
-    }
-
-    public OpenAddressHashMap(int capacity, float loadFactor, float resizeCapacityMultiplier) {
-        if (capacity <= 0) {
-            throw new IllegalArgumentException("Illegal capacity: " + capacity);
-        }
-        if (loadFactor <= 0) {
-            throw new IllegalArgumentException("Illegal loadFactor: " + loadFactor);
-        }
-        if (resizeCapacityMultiplier <= 1) {
-            throw new IllegalArgumentException("Illegal resizeCapacityMultiplier: " + resizeCapacityMultiplier);
-        }
+    private void init(int capacity, float loadFactor, float resizeCapacityMultiplier) {
         this.capacity = capacity;
         this.loadFactor = loadFactor;
         this.resizeCapacityMultiplier = resizeCapacityMultiplier;
         this.table = new HashmapElement[capacity];
     }
 
+    public OpenAddressHashMap() {
+        init(DEFAULT_CAPACITY, DEFAULT_LOAD_FACTOR, DEFAULT_RESIZE_CAPACITY_MULTIPLIER);
+    }
+
+    public OpenAddressHashMap(int capacity, float loadFactor, float resizeCapacityMultiplier) {
+        assert capacity > 0 : "Illegal capacity: " + capacity;
+        assert loadFactor > 0 : "Illegal loadFactor: " + loadFactor;
+        assert resizeCapacityMultiplier > 1 : "Illegal resizeCapacityMultiplier: " + resizeCapacityMultiplier;
+        init(capacity, loadFactor, resizeCapacityMultiplier);
+    }
+
     public void put(int key, long value) {
-        if (size >= capacity * loadFactor) {
-            resizeCapacity(resizeCapacityMultiplier);
-        }
+        if (size >= capacity * loadFactor) resizeCapacity(resizeCapacityMultiplier);
         putByOALogic(key, value);
     }
 
@@ -65,9 +58,7 @@ public class OpenAddressHashMap {
 
     int getBucketNumber(int key) {
         int bucketNumber = hashFunction(key);
-        while (table[bucketNumber].getKey() != key) {
-            bucketNumber++;
-        }
+        while (table[bucketNumber].getKey() != key) bucketNumber++;
         return bucketNumber;
     }
 
@@ -80,14 +71,10 @@ public class OpenAddressHashMap {
         boolean newKey = true;
         while (table[bucketNumber] != null && (newKey = table[bucketNumber].getKey() != key)) {
             bucketNumber++;
-            if (bucketNumber == capacity) {
-                resizeCapacity(resizeCapacityMultiplier);
-            }
+            if (bucketNumber == capacity) resizeCapacity(resizeCapacityMultiplier);
         }
         table[bucketNumber] = new HashmapElement(key, value);
-        if (newKey) {
-            size++;
-        }
+        if (newKey) size++;
     }
 
     private void resizeCapacity(float resizeCapacityMultiplier) {

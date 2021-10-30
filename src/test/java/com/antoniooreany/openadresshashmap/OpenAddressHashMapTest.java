@@ -67,9 +67,7 @@ public class OpenAddressHashMapTest {
 
     @Test
     public void resizeCapacity() {
-        for (int i = 0; i < 1024; i++) {
-            openAddressHashMap.put(i, i);
-        }
+        for (int i = 0; i < 1024; i++) openAddressHashMap.put(i, i);
 
         Assert.assertEquals(2048, (int) openAddressHashMap.getCapacity());
     }
@@ -136,9 +134,7 @@ public class OpenAddressHashMapTest {
         OpenAddressHashMap openAddressHashMap = new OpenAddressHashMap(initialCapacity,
                 initialLoadFactor,
                 initialResizeCapacityMultiplier);
-        for (int i = 0; i < 13; i++) {
-            openAddressHashMap.put(i, i);
-        }
+        for (int i = 0; i < 13; i++) openAddressHashMap.put(i, i);
 
         Assert.assertEquals(Math.round(initialCapacity * initialResizeCapacityMultiplier),
                 openAddressHashMap.getCapacity());
@@ -152,9 +148,7 @@ public class OpenAddressHashMapTest {
         OpenAddressHashMap openAddressHashMap = new OpenAddressHashMap(initialCapacity,
                 initialLoadFactor,
                 initialResizeCapacityMultiplier);
-        for (int i = 0; i < 11; i++) {
-            openAddressHashMap.put(i, i);
-        }
+        for (int i = 0; i < 11; i++) openAddressHashMap.put(i, i);
 
         Assert.assertEquals(Math.round(initialCapacity * initialResizeCapacityMultiplier),
                 openAddressHashMap.getCapacity());

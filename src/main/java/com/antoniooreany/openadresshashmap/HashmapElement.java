@@ -17,8 +17,7 @@ public record HashmapElement(int key, long value) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         HashmapElement hashmapElement = (HashmapElement) o;
-        return key == hashmapElement.key &&
-                value == hashmapElement.value;
+        return key == hashmapElement.key && value == hashmapElement.value;
     }
 
     @Override
