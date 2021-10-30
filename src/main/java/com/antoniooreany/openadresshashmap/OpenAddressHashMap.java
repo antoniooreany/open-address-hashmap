@@ -21,6 +21,7 @@ public class OpenAddressHashMap {
         this.loadFactor = loadFactor;
         this.resizeCapacityMultiplier = resizeCapacityMultiplier;
         this.table = new HashmapElement[capacity];
+        this.size = 0;
     }
 
     public OpenAddressHashMap() {
@@ -57,17 +58,17 @@ public class OpenAddressHashMap {
     }
 
     int getBucketNumber(int key) {
-        int bucketNumber = hashFunction(key);
+        int bucketNumber = getHash(key);
         while (table[bucketNumber].getKey() != key) bucketNumber++;
         return bucketNumber;
     }
 
-    private int hashFunction(int key) {
+    private int getHash(int key) {
         return Math.abs(key % capacity);
     }
 
     private void putByOALogic(int key, long value) {
-        int bucketNumber = hashFunction(key);
+        int bucketNumber = getHash(key);
         boolean newKey = true;
         while (table[bucketNumber] != null && (newKey = table[bucketNumber].getKey() != key)) {
             bucketNumber++;
@@ -80,8 +81,8 @@ public class OpenAddressHashMap {
     private void resizeCapacity(float resizeCapacityMultiplier) {
         HashmapElement[] oldTable = table;
         capacity = Math.round(capacity * resizeCapacityMultiplier);
-        size = 0;
         table = new HashmapElement[capacity];
+        size = 0;
         Arrays.stream(oldTable).filter(Objects::nonNull).forEach(hashmapElement ->
                 putByOALogic(hashmapElement.getKey(), hashmapElement.getValue()));
     }

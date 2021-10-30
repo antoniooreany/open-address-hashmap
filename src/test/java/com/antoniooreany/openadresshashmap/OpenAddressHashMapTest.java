@@ -122,7 +122,7 @@ public class OpenAddressHashMapTest {
     }
 
     @Test(expected = NoSuchElementException.class)
-    public void NoSuchElementExceptionTest() {
+    public void noSuchElementExceptionTest() {
         openAddressHashMap.get(4);
     }
 
