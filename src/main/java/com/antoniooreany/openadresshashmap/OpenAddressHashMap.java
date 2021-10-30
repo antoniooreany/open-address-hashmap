@@ -11,17 +11,30 @@ public class OpenAddressHashMap {
     private static final float DEFAULT_RESIZE_CAPACITY_MULTIPLIER = 2.0F;
 
     /*
-    performance / memory consumption can be changed by changing values of:
-    - capacity
-    - loadFactor
-    - resizeCapacityMultiplier
-     */
+        performance / memory consumption can be changed by changing values of:
+        - capacity
+        - loadFactor
+        - resizeCapacityMultiplier
+        it can be done even during runtime via setters for:
+    */
     private int capacity;
     private float loadFactor;
     private float resizeCapacityMultiplier;
 
     private HashmapElement[] table;
     private int size;
+
+    public void setCapacity(int capacity) {
+        if (this.capacity < capacity) this.capacity = capacity;
+    }
+
+    public void setLoadFactor(float loadFactor) {
+        this.loadFactor = loadFactor;
+    }
+
+    public void setResizeCapacityMultiplier(float resizeCapacityMultiplier) {
+        this.resizeCapacityMultiplier = resizeCapacityMultiplier;
+    }
 
     private void init(int capacity, float loadFactor, float resizeCapacityMultiplier) {
         this.capacity = capacity;
