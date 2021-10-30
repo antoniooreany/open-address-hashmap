@@ -11,7 +11,7 @@ public class OpenAddressHashMapTest {
     private OpenAddressHashMap openAddressHashMap;
 
     @Before
-    public void beforeEachMethod() {
+    public void initEach() {
         openAddressHashMap = new OpenAddressHashMap();
     }
 
@@ -66,6 +66,15 @@ public class OpenAddressHashMapTest {
     }
 
     @Test
+    public void resizeCapacity() {
+        for (int i = 0; i < 1024; i++) {
+            openAddressHashMap.put(i, i);
+        }
+
+        Assert.assertEquals(2048, (int) openAddressHashMap.getCapacity());
+    }
+
+    @Test
     public void sameKeysTest() {
         openAddressHashMap.put(1, 0L);
         openAddressHashMap.put(1, 1L);
@@ -74,15 +83,6 @@ public class OpenAddressHashMapTest {
 
         Assert.assertEquals(3L, openAddressHashMap.get(1));
         Assert.assertEquals(1, openAddressHashMap.size());
-    }
-
-    @Test
-    public void resizeCapacityTest() {
-        for (int i = 0; i < 1024; i++) {
-            openAddressHashMap.put(i, i);
-        }
-
-        Assert.assertEquals(2048, (int) openAddressHashMap.getCapacity());
     }
 
     @Test

@@ -94,7 +94,7 @@ public class OpenAddressHashMap {
         HashmapElement[] oldTable = table;
         capacity = Math.round(capacity * resizeCapacityMultiplier);
         size = 0;
-        table = new HashmapElement[(int) capacity];
+        table = new HashmapElement[capacity];
         Arrays.stream(oldTable).filter(Objects::nonNull).forEach(hashmapElement ->
                 putByOALogic(hashmapElement.getKey(), hashmapElement.getValue()));
     }
