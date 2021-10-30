@@ -10,9 +10,16 @@ public class OpenAddressHashMap {
     private static final float DEFAULT_LOAD_FACTOR = 0.75F;
     private static final float DEFAULT_RESIZE_CAPACITY_MULTIPLIER = 2.0F;
 
+    /*
+    performance / memory consumption can be changed by changing values of:
+    - capacity
+    - loadFactor
+    - resizeCapacityMultiplier
+     */
     private int capacity;
     private float loadFactor;
     private float resizeCapacityMultiplier;
+
     private HashmapElement[] table;
     private int size;
 
