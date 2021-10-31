@@ -19,6 +19,26 @@ public class OpenAddressHashMap {
         - loadFactor
         - resizeCapacityMultiplier
     it can be done even during runtime via setters for these fields.
+
+    How to adjust performance / memory consumption:
+
+    For performance increasing, we need to:
+    - increase capacity
+      or/and
+    - decrease loadFactor
+      or/and
+    - increase resizeCapacityMultiplier
+
+    For memory consumption decreasing,
+    we need to do verse-versa of what has to be done for performance increasing:
+    - decrease capacity
+      or/and
+    - increase loadFactor
+      or/and
+    - decrease resizeCapacityMultiplier
+
+    These 6 relations are non-linear.
+
     */
     private int capacity;
     private float loadFactor;
@@ -42,18 +62,18 @@ public class OpenAddressHashMap {
         this.resizeCapacityMultiplier = resizeCapacityMultiplier;
     }
 
+    private void parametersValidityCheck(int capacity, float loadFactor, float resizeCapacityMultiplier) {
+        if (capacity <= 0) throw new IllegalArgumentException("Illegal capacity: " + capacity);
+        if (loadFactor <= 0 || loadFactor >= 1) throw new IllegalArgumentException("Illegal loadFactor: " + loadFactor);
+        if (resizeCapacityMultiplier <= 1) throw new IllegalArgumentException("Illegal resizeCapacityMultiplier: " + resizeCapacityMultiplier);
+    }
+
     private void init(int capacity, float loadFactor, float resizeCapacityMultiplier) {
         this.capacity = capacity;
         this.loadFactor = loadFactor;
         this.resizeCapacityMultiplier = resizeCapacityMultiplier;
         this.table = new HashmapElement[capacity];
         this.size = 0;
-    }
-
-    private void parametersValidityCheck(int capacity, float loadFactor, float resizeCapacityMultiplier) {
-        if (capacity <= 0) throw new IllegalArgumentException("Illegal capacity: " + capacity);
-        if (loadFactor <= 0 || loadFactor >= 1) throw new IllegalArgumentException("Illegal loadFactor: " + loadFactor);
-        if (resizeCapacityMultiplier <= 1) throw new IllegalArgumentException("Illegal resizeCapacityMultiplier: " + resizeCapacityMultiplier);
     }
 
     public OpenAddressHashMap() {
