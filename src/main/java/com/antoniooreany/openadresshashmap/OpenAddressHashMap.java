@@ -1,6 +1,7 @@
 package com.antoniooreany.openadresshashmap;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
@@ -52,9 +53,9 @@ public class OpenAddressHashMap {
     }
 
     public OpenAddressHashMap(int capacity, float loadFactor, float resizeCapacityMultiplier) {
-        assert capacity > 0 : "Illegal capacity: " + capacity;
-        assert loadFactor > 0 : "Illegal loadFactor: " + loadFactor;
-        assert resizeCapacityMultiplier > 1 : "Illegal resizeCapacityMultiplier: " + resizeCapacityMultiplier;
+        if (capacity <= 0) throw new IllegalArgumentException("Illegal capacity: " + capacity);
+        if (loadFactor <= 0 || loadFactor >= 1) throw new IllegalArgumentException("Illegal loadFactor: " + loadFactor);
+        if (resizeCapacityMultiplier <= 1) throw new IllegalArgumentException("Illegal resizeCapacityMultiplier: " + resizeCapacityMultiplier);
         init(capacity, loadFactor, resizeCapacityMultiplier);
     }
 
