@@ -1,7 +1,6 @@
 package com.antoniooreany.openadresshashmap;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
@@ -12,7 +11,7 @@ public class OpenAddressHashMap {
     private static final float DEFAULT_RESIZE_CAPACITY_MULTIPLIER = 2.0F;
 
     /*
-    As soon as performance directly correlate with memory consumption,
+    A performance directly correlate with memory consumption,
     meaning: the more performance you need under otherwise equal conditions,
     the more memory have to be used.
     performance / memory consumption can be changed by changing values of following fields:
@@ -29,14 +28,17 @@ public class OpenAddressHashMap {
     private int size;
 
     public void setCapacity(int capacity) {
+        parametersValidityCheck(capacity, this.loadFactor, this.resizeCapacityMultiplier);
         if (this.capacity < capacity) this.capacity = capacity;
     }
 
     public void setLoadFactor(float loadFactor) {
+        parametersValidityCheck(this.capacity, loadFactor, this.resizeCapacityMultiplier);
         this.loadFactor = loadFactor;
     }
 
     public void setResizeCapacityMultiplier(float resizeCapacityMultiplier) {
+        parametersValidityCheck(this.capacity, this.loadFactor, resizeCapacityMultiplier);
         this.resizeCapacityMultiplier = resizeCapacityMultiplier;
     }
 
@@ -48,14 +50,18 @@ public class OpenAddressHashMap {
         this.size = 0;
     }
 
+    private void parametersValidityCheck(int capacity, float loadFactor, float resizeCapacityMultiplier) {
+        if (capacity <= 0) throw new IllegalArgumentException("Illegal capacity: " + capacity);
+        if (loadFactor <= 0 || loadFactor >= 1) throw new IllegalArgumentException("Illegal loadFactor: " + loadFactor);
+        if (resizeCapacityMultiplier <= 1) throw new IllegalArgumentException("Illegal resizeCapacityMultiplier: " + resizeCapacityMultiplier);
+    }
+
     public OpenAddressHashMap() {
         init(DEFAULT_CAPACITY, DEFAULT_LOAD_FACTOR, DEFAULT_RESIZE_CAPACITY_MULTIPLIER);
     }
 
     public OpenAddressHashMap(int capacity, float loadFactor, float resizeCapacityMultiplier) {
-        if (capacity <= 0) throw new IllegalArgumentException("Illegal capacity: " + capacity);
-        if (loadFactor <= 0 || loadFactor >= 1) throw new IllegalArgumentException("Illegal loadFactor: " + loadFactor);
-        if (resizeCapacityMultiplier <= 1) throw new IllegalArgumentException("Illegal resizeCapacityMultiplier: " + resizeCapacityMultiplier);
+        parametersValidityCheck(capacity, loadFactor, resizeCapacityMultiplier);
         init(capacity, loadFactor, resizeCapacityMultiplier);
     }
 
