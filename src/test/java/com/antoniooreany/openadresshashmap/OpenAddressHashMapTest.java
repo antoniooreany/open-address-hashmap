@@ -153,4 +153,22 @@ public class OpenAddressHashMapTest {
         Assert.assertEquals(Math.round(initialCapacity * initialResizeCapacityMultiplier),
                 openAddressHashMap.getCapacity());
     }
+
+    @Test
+    public void performanceTest0(){
+        OpenAddressHashMap openAddressHashMap = new OpenAddressHashMap(
+                16, 0.75f, 1.1f);
+        for (int i = 0; i < 10000000; i++) {
+            openAddressHashMap.put(i, i);
+        }
+    }
+
+    @Test
+    public void performanceTest1(){
+        OpenAddressHashMap openAddressHashMap = new OpenAddressHashMap(
+                16, 0.75f, 2.0f);
+        for (int i = 0; i < 10000000; i++) {
+            openAddressHashMap.put(i, i);
+        }
+    }
 }

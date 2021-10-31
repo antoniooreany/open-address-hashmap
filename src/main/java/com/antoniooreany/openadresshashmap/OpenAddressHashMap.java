@@ -15,10 +15,11 @@ public class OpenAddressHashMap {
     meaning: the more performance you need under otherwise equal conditions,
     the more memory have to be used.
     performance / memory consumption can be changed by changing values of following fields:
-        - capacity
-        - loadFactor
-        - resizeCapacityMultiplier
-    it can be done even during runtime via setters for these fields.
+        - capacity, influences linearly
+        - loadFactor, influences linearly
+        - resizeCapacityMultiplier, influences exponentially
+
+    It can be done even during runtime via setters for these fields.
 
     How to adjust performance / memory consumption:
 
@@ -27,7 +28,7 @@ public class OpenAddressHashMap {
       or/and
     - decrease loadFactor
       or/and
-    - increase resizeCapacityMultiplier
+    - increase resizeCapacityMultiplier exponentially
 
     For memory consumption decreasing,
     we need to do verse-versa of what has to be done for performance increasing:
@@ -37,9 +38,12 @@ public class OpenAddressHashMap {
       or/and
     - decrease resizeCapacityMultiplier
 
-    These 6 relations are non-linear.
-
+    These 6 relations are stochastic functions,
+    and therefore for achieving needed results better to find the appropriate parameters
+    experimentally, but not analytically.
+    Nevertheless, resizeCapacityMultiplier gives maximum influence because this parameter influences exponentially.
     */
+    // TODO rewrite the comment above to the topic "time-, memory-consumption".
     private int capacity;
     private float loadFactor;
     private float resizeCapacityMultiplier;
