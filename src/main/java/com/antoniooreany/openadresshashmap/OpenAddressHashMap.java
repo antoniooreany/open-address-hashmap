@@ -108,7 +108,7 @@ public class OpenAddressHashMap {
             int bucketNumber = getBucketNumber(key);
             return table[bucketNumber].getValue();
         } catch (NullPointerException e) {
-            throw new NoSuchElementException(String.format("Key %s does not exist in the map", key));
+            throw new NoSuchElementException(String.format("Key %s does not exist in the current map", key));
         }
     }
 

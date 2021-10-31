@@ -128,14 +128,14 @@ public class OpenAddressHashMapTest {
 
     @Test
     public void resizeCapacityMultiplierTest() {
-        int initialCapacity = 13;
+        int initialCapacity = 32;
         float initialResizeCapacityMultiplier = 1.3f;
         float initialLoadFactor = 0.85f;
         OpenAddressHashMap openAddressHashMap = new OpenAddressHashMap(
                 initialCapacity,
                 initialLoadFactor,
                 initialResizeCapacityMultiplier);
-        for (int i = 0; i < 13; i++) openAddressHashMap.put(i, i);
+        for (int i = 0; i < initialCapacity; i++) openAddressHashMap.put(i, i);
 
         Assert.assertEquals(Math.round(initialCapacity * initialResizeCapacityMultiplier),
                 openAddressHashMap.getCapacity());
@@ -157,7 +157,7 @@ public class OpenAddressHashMapTest {
     }
 
     @Test
-    public void performanceTest0(){
+    public void timeConsumptionTest0(){
         OpenAddressHashMap openAddressHashMap = new OpenAddressHashMap(
                 16, 0.75f, 1.1f);
         for (int i = 0; i < 10_000_000; i++) {
@@ -166,7 +166,7 @@ public class OpenAddressHashMapTest {
     }
 
     @Test
-    public void performanceTest1(){
+    public void timeConsumptionTest1(){
         OpenAddressHashMap openAddressHashMap = new OpenAddressHashMap(
                 16, 0.75f, 2.0f);
         for (int i = 0; i < 10_000_000; i++) {
