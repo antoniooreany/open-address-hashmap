@@ -88,14 +88,13 @@ public class OpenAddressHashMap {
         this.size = 0;
     }
 
-    public OpenAddressHashMap() {
-        parametersValidityCheck(DEFAULT_CAPACITY, DEFAULT_LOAD_FACTOR, DEFAULT_RESIZE_CAPACITY_MULTIPLIER);
-        init(DEFAULT_CAPACITY, DEFAULT_LOAD_FACTOR, DEFAULT_RESIZE_CAPACITY_MULTIPLIER);
-    }
-
     public OpenAddressHashMap(int capacity, float loadFactor, float resizeCapacityMultiplier) {
         parametersValidityCheck(capacity, loadFactor, resizeCapacityMultiplier);
         init(capacity, loadFactor, resizeCapacityMultiplier);
+    }
+
+    public OpenAddressHashMap() {
+        this(DEFAULT_CAPACITY, DEFAULT_LOAD_FACTOR, DEFAULT_RESIZE_CAPACITY_MULTIPLIER);
     }
 
     public void put(int key, long value) {
