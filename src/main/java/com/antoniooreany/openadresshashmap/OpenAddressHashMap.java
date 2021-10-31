@@ -7,43 +7,51 @@ import java.util.Objects;
 public class OpenAddressHashMap {
 
     private static final int DEFAULT_CAPACITY = 16;
-    private static final float DEFAULT_LOAD_FACTOR = 0.75F;
-    private static final float DEFAULT_RESIZE_CAPACITY_MULTIPLIER = 2.0F;
+    private static final float DEFAULT_LOAD_FACTOR = 0.75f;
+    private static final float DEFAULT_RESIZE_CAPACITY_MULTIPLIER = 2.0f;
 
     /*
-    A performance directly correlate with memory consumption,
-    meaning: the more performance you need under otherwise equal conditions,
-    the more memory have to be used.
-    performance / memory consumption can be changed by changing values of following fields:
-        - capacity, influences linearly
-        - loadFactor, influences linearly
-        - resizeCapacityMultiplier, influences exponentially
+    Under the otherwise equal conditions of the particular implementation,
+    the more memory we consume, the less time-consumption we achieve.
+
+    The time-, memory-consumption can be changed by setting up the values of the following fields:
+    - capacity, influences linearly.
+    - loadFactor, influences linearly.
+    - resizeCapacityMultiplier, influences exponentially.
 
     It can be done even during runtime via setters for these fields.
 
-    How to adjust performance / memory consumption:
+    How to adjust time-, memory-consumption?
 
-    For performance increasing, we need to:
+    For decreasing of the time-consumption, we need to:
     - increase capacity
-      or/and
+      and/or
     - decrease loadFactor
-      or/and
-    - increase resizeCapacityMultiplier exponentially
+      and/or
+    - increase resizeCapacityMultiplier
 
-    For memory consumption decreasing,
-    we need to do verse-versa of what has to be done for performance increasing:
+    For decreasing of the memory consumption, we need to:
     - decrease capacity
-      or/and
+      and/or
     - increase loadFactor
-      or/and
+      and/or
     - decrease resizeCapacityMultiplier
 
     These 6 relations are stochastic functions,
-    and therefore for achieving needed results better to find the appropriate parameters
+    moreover, there might exist some influence factors
+    we do not consider (such as GC, some details of the HW-components etc.),
+    therefore for achieving appropriate results,
+    it is better to find the needed parameters
     experimentally, but not analytically.
-    Nevertheless, resizeCapacityMultiplier gives maximum influence because this parameter influences exponentially.
+
+    By the way, resizeCapacityMultiplier gives maximum influence
+    because this parameter influences exponentially, but not linearly.
+
+    I am not sure that my conclusions are 100% correct,
+    but that was my current thoughts about a
+    time-, memory-consumption of the OpenAddressHashMap.
     */
-    // TODO rewrite the comment above to the topic "time-, memory-consumption".
+
     private int capacity;
     private float loadFactor;
     private float resizeCapacityMultiplier;
@@ -81,6 +89,7 @@ public class OpenAddressHashMap {
     }
 
     public OpenAddressHashMap() {
+        parametersValidityCheck(DEFAULT_CAPACITY, DEFAULT_LOAD_FACTOR, DEFAULT_RESIZE_CAPACITY_MULTIPLIER);
         init(DEFAULT_CAPACITY, DEFAULT_LOAD_FACTOR, DEFAULT_RESIZE_CAPACITY_MULTIPLIER);
     }
 
@@ -99,7 +108,7 @@ public class OpenAddressHashMap {
             int bucketNumber = getBucketNumber(key);
             return table[bucketNumber].getValue();
         } catch (NullPointerException e) {
-            throw new NoSuchElementException(String.format("Key %s doesn't exist in the map", key));
+            throw new NoSuchElementException(String.format("Key %s does not exist in the map", key));
         }
     }
 
@@ -112,17 +121,17 @@ public class OpenAddressHashMap {
     }
 
     int getBucketNumber(int key) {
-        int bucketNumber = getHash(key);
+        int bucketNumber = hash(key);
         while (table[bucketNumber].getKey() != key) bucketNumber++;
         return bucketNumber;
     }
 
-    private int getHash(int key) {
+    private int hash(int key) {
         return Math.abs(key % capacity);
     }
 
     private void putByOALogic(int key, long value) {
-        int bucketNumber = getHash(key);
+        int bucketNumber = hash(key);
         boolean newKey = true;
         while (table[bucketNumber] != null && (newKey = table[bucketNumber].getKey() != key)) {
             bucketNumber++;
@@ -137,7 +146,9 @@ public class OpenAddressHashMap {
         capacity = Math.round(capacity * resizeCapacityMultiplier);
         table = new HashmapElement[capacity];
         size = 0;
-        Arrays.stream(oldTable).filter(Objects::nonNull).forEach(hashmapElement ->
-                putByOALogic(hashmapElement.getKey(), hashmapElement.getValue()));
+        Arrays.stream(oldTable).filter(Objects::nonNull).
+                forEach(hashmapElement ->
+                        putByOALogic(hashmapElement.getKey(), hashmapElement.getValue())
+                );
     }
 }

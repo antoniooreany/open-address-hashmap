@@ -131,7 +131,8 @@ public class OpenAddressHashMapTest {
         int initialCapacity = 13;
         float initialResizeCapacityMultiplier = 1.3f;
         float initialLoadFactor = 0.85f;
-        OpenAddressHashMap openAddressHashMap = new OpenAddressHashMap(initialCapacity,
+        OpenAddressHashMap openAddressHashMap = new OpenAddressHashMap(
+                initialCapacity,
                 initialLoadFactor,
                 initialResizeCapacityMultiplier);
         for (int i = 0; i < 13; i++) openAddressHashMap.put(i, i);
@@ -145,7 +146,8 @@ public class OpenAddressHashMapTest {
         int initialCapacity = 100;
         float initialResizeCapacityMultiplier = 2.0f;
         float initialLoadFactor = 0.1f;
-        OpenAddressHashMap openAddressHashMap = new OpenAddressHashMap(initialCapacity,
+        OpenAddressHashMap openAddressHashMap = new OpenAddressHashMap(
+                initialCapacity,
                 initialLoadFactor,
                 initialResizeCapacityMultiplier);
         for (int i = 0; i < 11; i++) openAddressHashMap.put(i, i);
@@ -158,7 +160,7 @@ public class OpenAddressHashMapTest {
     public void performanceTest0(){
         OpenAddressHashMap openAddressHashMap = new OpenAddressHashMap(
                 16, 0.75f, 1.1f);
-        for (int i = 0; i < 10000000; i++) {
+        for (int i = 0; i < 10_000_000; i++) {
             openAddressHashMap.put(i, i);
         }
     }
@@ -167,7 +169,7 @@ public class OpenAddressHashMapTest {
     public void performanceTest1(){
         OpenAddressHashMap openAddressHashMap = new OpenAddressHashMap(
                 16, 0.75f, 2.0f);
-        for (int i = 0; i < 10000000; i++) {
+        for (int i = 0; i < 10_000_000; i++) {
             openAddressHashMap.put(i, i);
         }
     }
