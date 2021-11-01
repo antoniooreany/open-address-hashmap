@@ -22,7 +22,14 @@ public class OpenAddressHashMapTest {
         openAddressHashMap.put(2, 2L);
         openAddressHashMap.put(3, 3L);
 
-        Assert.assertEquals(2, openAddressHashMap.get(2));
+        Assert.assertEquals(0L, openAddressHashMap.get(0));
+        Assert.assertEquals(1L, openAddressHashMap.get(1));
+        Assert.assertEquals(2L, openAddressHashMap.get(2));
+        Assert.assertEquals(3L, openAddressHashMap.get(3));
+
+        openAddressHashMap.put(2, 444L);
+
+        Assert.assertEquals(444L, openAddressHashMap.get(2));
     }
 
     @Test
@@ -32,7 +39,14 @@ public class OpenAddressHashMapTest {
         openAddressHashMap.put(2, 2L);
         openAddressHashMap.put(3, 3L);
 
+        Assert.assertEquals(0L, openAddressHashMap.get(0));
+        Assert.assertEquals(1L, openAddressHashMap.get(1));
+        Assert.assertEquals(2L, openAddressHashMap.get(2));
         Assert.assertEquals(3L, openAddressHashMap.get(3));
+
+        openAddressHashMap.put(2, 444L);
+
+        Assert.assertEquals(444L, openAddressHashMap.get(2));
     }
 
     @Test
@@ -43,33 +57,10 @@ public class OpenAddressHashMapTest {
         openAddressHashMap.put(3, 3L);
 
         Assert.assertEquals(4, openAddressHashMap.size());
-    }
 
-    @Test
-    public void getBucketNumber() {
-        openAddressHashMap.put(0, 0L);
-        openAddressHashMap.put(1, 1L);
-        openAddressHashMap.put(2, 2L);
-        openAddressHashMap.put(3, 3L);
+        openAddressHashMap.put(444, 888L);
 
-        Assert.assertEquals(2, openAddressHashMap.getBucketNumber(2));
-    }
-
-    @Test
-    public void getCapacity() {
-        openAddressHashMap.put(0, 0L);
-        openAddressHashMap.put(1, 1L);
-        openAddressHashMap.put(2, 2L);
-        openAddressHashMap.put(3, 3L);
-
-        Assert.assertEquals(16, (int) openAddressHashMap.getCapacity());
-    }
-
-    @Test
-    public void resizeCapacity() {
-        for (int i = 0; i < 1024; i++) openAddressHashMap.put(i, i);
-
-        Assert.assertEquals(2048, (int) openAddressHashMap.getCapacity());
+        Assert.assertEquals(5, openAddressHashMap.size());
     }
 
     @Test
@@ -85,40 +76,32 @@ public class OpenAddressHashMapTest {
 
     @Test
     public void hashSynonymTest0() {
-        int key0 = 0 * 16 + 5;
-        int key1 = 1 * 16 + 5;
-        int key2 = 2 * 16 + 5;
+        int key0 = 6; // hash(6) = 11
+        int key1 = 19; // hash(12) = 11
+        int key2 = 40; // hash(40) = 11
 
         openAddressHashMap.put(key0, 1L);
         openAddressHashMap.put(key1, 2L);
         openAddressHashMap.put(key2, 3L);
 
-        Assert.assertEquals(1L, openAddressHashMap.get(key0));
-        Assert.assertEquals(2L, openAddressHashMap.get(key1));
-        Assert.assertEquals(3L, openAddressHashMap.get(key2));
-
-        Assert.assertEquals(5, openAddressHashMap.getBucketNumber(key0));
-        Assert.assertEquals(6, openAddressHashMap.getBucketNumber(key1));
-        Assert.assertEquals(7, openAddressHashMap.getBucketNumber(key2));
+        Assert.assertEquals(11, openAddressHashMap.getBucketNumber(key0));
+        Assert.assertEquals(12, openAddressHashMap.getBucketNumber(key1));
+        Assert.assertEquals(13, openAddressHashMap.getBucketNumber(key2));
     }
 
     @Test
     public void hashSynonymTest1() {
-        int key0 = 0 * 16 + 5;
-        int key1 = 0 * 16 + 6;
-        int key2 = 1 * 16 + 5;
+        int key0 = 6; // hash(6) = 11
+        int key1 = 32; // hash(32) = 12
+        int key2 = 19; // hash(19) = 11
 
         openAddressHashMap.put(key0, 1L);
         openAddressHashMap.put(key1, 2L);
         openAddressHashMap.put(key2, 3L);
 
-        Assert.assertEquals(1L, openAddressHashMap.get(key0));
-        Assert.assertEquals(2L, openAddressHashMap.get(key1));
-        Assert.assertEquals(3L, openAddressHashMap.get(key2));
-
-        Assert.assertEquals(5, openAddressHashMap.getBucketNumber(key0));
-        Assert.assertEquals(6, openAddressHashMap.getBucketNumber(key1));
-        Assert.assertEquals(7, openAddressHashMap.getBucketNumber(key2));
+        Assert.assertEquals(11, openAddressHashMap.getBucketNumber(key0));
+        Assert.assertEquals(12, openAddressHashMap.getBucketNumber(key1));
+        Assert.assertEquals(13, openAddressHashMap.getBucketNumber(key2));
     }
 
     @Test(expected = NoSuchElementException.class)
@@ -157,7 +140,7 @@ public class OpenAddressHashMapTest {
     }
 
     @Test
-    public void timeConsumptionTest0(){
+    public void timeConsumptionTest0() {
         OpenAddressHashMap openAddressHashMap = new OpenAddressHashMap(
                 16, 0.75f, 1.1f);
         for (int i = 0; i < 10_000_000; i++) {
@@ -166,7 +149,7 @@ public class OpenAddressHashMapTest {
     }
 
     @Test
-    public void timeConsumptionTest1(){
+    public void timeConsumptionTest1() {
         OpenAddressHashMap openAddressHashMap = new OpenAddressHashMap(
                 16, 0.75f, 2.0f);
         for (int i = 0; i < 10_000_000; i++) {

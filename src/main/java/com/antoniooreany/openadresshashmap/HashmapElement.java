@@ -2,7 +2,7 @@ package com.antoniooreany.openadresshashmap;
 
 import java.util.Objects;
 
-public record HashmapElement(int key, long value) {
+record HashmapElement(int key, long value) {
 
     public int getKey() {
         return key;
@@ -24,4 +24,12 @@ public record HashmapElement(int key, long value) {
     public int hashCode() {
         return Objects.hash(key, value);
     }
+
+    @Override
+    public String toString() {
+        return "HashmapElement[" +
+                "key=" + key + ", " +
+                "value=" + value + ']';
+    }
+
 }

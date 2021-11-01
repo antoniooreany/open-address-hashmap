@@ -77,7 +77,8 @@ public class OpenAddressHashMap {
     private void parametersValidityCheck(int capacity, float loadFactor, float resizeCapacityMultiplier) {
         if (capacity <= 0) throw new IllegalArgumentException("Illegal capacity: " + capacity);
         if (loadFactor <= 0 || loadFactor >= 1) throw new IllegalArgumentException("Illegal loadFactor: " + loadFactor);
-        if (resizeCapacityMultiplier <= 1) throw new IllegalArgumentException("Illegal resizeCapacityMultiplier: " + resizeCapacityMultiplier);
+        if (resizeCapacityMultiplier <= 1)
+            throw new IllegalArgumentException("Illegal resizeCapacityMultiplier: " + resizeCapacityMultiplier);
     }
 
     private void init(int capacity, float loadFactor, float resizeCapacityMultiplier) {
@@ -106,6 +107,7 @@ public class OpenAddressHashMap {
         try {
             int bucketNumber = getBucketNumber(key);
             return table[bucketNumber].getValue();
+//        } catch (IndexOutOfBoundsException e) {
         } catch (NullPointerException e) {
             throw new NoSuchElementException(String.format("Key %s does not exist in the current map", key));
         }
@@ -126,7 +128,10 @@ public class OpenAddressHashMap {
     }
 
     private int hash(int key) {
-        return Math.abs(key % capacity);
+        // Golden ratio constant
+        double f = (Math.sqrt(5.0) - 1.0) / 2.0;
+        // Hash function according to the division method
+        return (int) Math.floor(capacity * (f * key - Math.floor(f * key)));
     }
 
     private void putByOALogic(int key, long value) {
